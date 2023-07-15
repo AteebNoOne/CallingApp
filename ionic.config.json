@@ -1,0 +1,7 @@
+{
+  "name": "CallingApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
