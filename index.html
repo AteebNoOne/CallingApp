@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Twilio Calling App</title>
+</head>
+<body>
+  <h1>Twilio Calling App</h1>
+
+  <form id="callForm">
+    <label for="phoneNumber">Phone Number:</label>
+    <input type="text" id="phoneNumber" name="phoneNumber" required>
+    <button type="submit">Call</button>
+  </form>
+
+  <script>
+    document.getElementById('callForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const phoneNumber = document.getElementById('phoneNumber').value;
+
+      // Make a request to the backend server to initiate the call
+      fetch(`http://localhost:4000/make-call?phoneNumber=${phoneNumber}`)
+        .then(response => response.text())
+        .then(callSid => console.log(`Call SID: ${callSid}`))
+        .catch(error => console.error(error));
+    });
+  </script>
+</body>
+</html>
