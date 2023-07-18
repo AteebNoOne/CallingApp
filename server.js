@@ -34,7 +34,7 @@ app.get('/make-call', (req, res) => {
 // Endpoint for Twilio to retrieve TwiML instructions
 app.post('/outbound-call', (req, res) => {
   const twiml = new twilio.twiml.VoiceResponse();
-  twiml.dial({ callerId: process.env.TWILIO_PHONE_NUMBER }, '+923122043673'); // Replace with the desired destination number
+  twiml.dial({ callerId: process.env.TWILIO_PHONE_NUMBER }, '+91'); // Replace with the desired destination number
   
   res.type('text/xml');
   res.send(twiml.toString());
