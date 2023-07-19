@@ -1,57 +1,31 @@
+import { NavigationContainer } from '@react-navigation/native';
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
-import { IonReactRouter } from '@ionic/react-router';
+import { Provider } from 'react-redux';
+import { defaultStore } from './store/app';
+import StackNavigator from './screens/StackNavigator';
+import { bootstrapUser } from './store/bootstrap';
 
-/* Core CSS required for Ionic components to work properly */
-import '@ionic/react/css/core.css';
+const App = () => {
+  /**
+   * NOTE:
+   * When Redux Toolkit dispatches a Thunk, it will put an `AbortController`
+   * into the returned Promise as the `abort` member. Invoking the `abort`
+   * method will prevent further actions from being dispatched in the Thunk.
+   *
+   * When a React component is unmounted, it will invoke the return value of any
+   * `useEffect` functions. In this case, if the `App` component is unmounted
+   * then the `abort` functions are called so the `bootstrap` actions can no
+   * longer dispatch actions.
+   */
+  React.useEffect(() => defaultStore.dispatch(bootstrapUser()).abort, []);
 
-/* Basic CSS for apps built with Ionic */
-import '@ionic/react/css/normalize.css';
-import '@ionic/react/css/structure.css';
-import '@ionic/react/css/typography.css';
-
-/* Optional CSS utils that can be commented out */
-import '@ionic/react/css/padding.css';
-import '@ionic/react/css/float-elements.css';
-import '@ionic/react/css/text-alignment.css';
-import '@ionic/react/css/text-transformation.css';
-import '@ionic/react/css/flex-utils.css';
-import '@ionic/react/css/display.css';
-
-/* Theme variables */
-import './theme/variables.css';
-import DialPad from './components/DialPad';
-import PermissionPrompt from './components/PermissionPrompt';
-import CallPage from './components/CallPage';
-import AudioStream from './components/AudioStream';
-
-setupIonicReact();
-
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <IonRouterOutlet>
-        <Route exact path="/home">
-          <DialPad />
-          <PermissionPrompt />
-        </Route>
-        <Route exact path="/alert">
-          <AlertComponent />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-        <Route exact path="/call">
-          <CallPage />
-        </Route>
-        <Route exact path="/audio">
-          <AudioStream />
-        </Route>
-      </IonRouterOutlet>
-    </IonReactRouter>
-  </IonApp>
-);
+  return (
+    <Provider store={defaultStore}>
+      <NavigationContainer>
+        <StackNavigator />
+      </NavigationContainer>
+    </Provider>
+  );
+};
 
 export default App;
